@@ -1,0 +1,23 @@
+name: Build DeathDimension
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Ekstrak source
+        run: unzip -q ./*.zip
+      - name: Build
+        run: mvn -B -f DeathDimension/pom.xml clean package
+      - uses: actions/upload-artifact@v4
+        with:
+          name: DeathDimension-jar
+          path: DeathDimension/target/DeathDimension.jar
